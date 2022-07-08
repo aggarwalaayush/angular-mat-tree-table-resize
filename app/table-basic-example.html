@@ -1,0 +1,29 @@
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <ng-container
+    matColumnDef="{{item.name}}"
+    *ngFor="let item of columns;let i=index;"
+  >
+    <th mat-header-cell *matHeaderCellDef [resizeColumn]="true" [index]="i">
+      {{item.displayName}}
+    </th>
+    <ng-container *matCellDef="let data">
+      <td
+        mat-cell
+        *ngIf="data.expandable && item.name!='count'"
+        [attr.colspan]="data.expandable ? displayedColumns.length:'1'"
+        (click)="console(data)"
+      >
+        {{data[item.name]}}
+      </td>
+      <ng-container *ngIf="!data.expandable">
+        <td mat-cell>{{data[item.name]}}</td>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr
+    mat-row
+    *matRowDef="let row; columns: displayedColumns;"
+    (click)="treeControl.toggle(row);console(row);"
+  ></tr>
+</table>
